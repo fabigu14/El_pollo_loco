@@ -1,4 +1,5 @@
 class World {
+
     character = new Character();
     clouds = [
         new Cloud()
@@ -8,34 +9,53 @@ class World {
         new Chicken(),
         new Chicken()
     ];
-    
+    backgroundObjects = [
+        new BackgroundObject('img/5.Fondo/Capas/5.cielo_1920-1080px.png', 0),
+        new BackgroundObject('img//5.Fondo//Capas//3.Fondo3/1.png', 0),
+        new BackgroundObject('img/5.Fondo/Capas/2.Fondo2/1.png', 0),
+        new BackgroundObject('img/5.Fondo/Capas/1.suelo-fondo1/1.png', 0)
+    ];
 
     ctx;
     canvas;
+    keyboard;
 
-    constructor(canvas) {
+    constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
+        this.keyboard = keyboard;
         this.draw();
+        this.setWorld()
     }
 
+    setWorld(){
+        this.character.world = this;
+    }
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); //clears canvas
-        //draws character
-        this.ctx.drawImage(this.character.img, this.character.x, this.character.y, this.character.width, this.character.height);
-        //draws enemies
-        this.enemies.forEach(enemy => {
-            this.ctx.drawImage(enemy.img, enemy.x, enemy.y, enemy.width, enemy.height);
-        });
-        //draws clouds
-        this.clouds.forEach(cloud => {
-            this.ctx.drawImage(cloud.img, cloud.x, cloud.y, cloud.width, cloud.height);
-        });
+        
+        this.addObjectToMap(this.backgroundObjects);
+        this.addObjectToMap(this.clouds);
+        this.addToMap(this.character);
+        this.addObjectToMap(this.enemies);
+        
+        
+
         //draw() is called frequently, depending on GPU
         let self = this;
-        requestAnimationFrame(function(){
+        requestAnimationFrame(function () {
             self.draw();
         })
+    }
+
+    addObjectToMap(object) {
+        object.forEach(o => {
+            this.addToMap(o);
+        });
+    }
+
+    addToMap(mo) {
+        this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
     }
 }
