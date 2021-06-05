@@ -2,11 +2,12 @@ class MovableObject {
     x = 120;
     y = 200;
     img;
-    height = 110;
-    width = 100;
+    height = 90;
+    width = 90;
     imageCache = {};
     currentImage = 0;
     movingSpeed;
+    oppositeDirection = false;
 
     loadImages(arr) {
         arr.forEach(path => {

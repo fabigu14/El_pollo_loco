@@ -24,23 +24,23 @@ class World {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.setWorld();
         this.draw();
-        this.setWorld()
     }
 
-    setWorld(){
+    setWorld() {
         this.character.world = this;
     }
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); //clears canvas
-        
+
         this.addObjectToMap(this.backgroundObjects);
         this.addObjectToMap(this.clouds);
         this.addToMap(this.character);
         this.addObjectToMap(this.enemies);
-        
-        
+
+
 
         //draw() is called frequently, depending on GPU
         let self = this;
@@ -56,6 +56,20 @@ class World {
     }
 
     addToMap(mo) {
+        if (mo.oppositeDirection) {
+            this.ctx.save();
+            this.ctx.translate(mo.width, 0); // versetzt Character um die übergebenen (x, y) Werte
+            this.ctx.scale(-1, 1); //flips Character in opposite direction by setting scaleX = -1
+            mo.x = mo.x * -1;
+            
+        }
         this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+
+        if (mo.oppositeDirection) {
+            this.ctx.restore();
+            mo.x = mo.x * -1;
+        }
+        
+
     }
 }
