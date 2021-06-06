@@ -1,9 +1,9 @@
 class MovableObject {
-    x = 120;
+    x = 0;
     y = 200;
     img;
-    height = 90;
-    width = 90;
+    height = 70;
+    width = 70;
     imageCache = {};
     currentImage = 0;
     movingSpeed;

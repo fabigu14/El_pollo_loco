@@ -1,7 +1,7 @@
 class Character extends MovableObject {
-    height = 300;
-    width = 150;
-    y = 130;
+    height = 250;
+    width = 130;
+    y = 180;
     movingSpeed = 10;
     IMAGES_WALKING = [
         'img/2.Secuencias_Personaje-Pepe-corrección/2.Secuencia_caminata/W-21.png',
@@ -32,7 +32,7 @@ class Character extends MovableObject {
                 this.x -= this.movingSpeed;
                 this.oppositeDirection = true;
             }
-
+            this.world.camera_x = -this.x;
         }, 1000 / 60);
 
         setInterval(() => {

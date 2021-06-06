@@ -1,24 +1,13 @@
 class World {
 
     character = new Character();
-    clouds = [
-        new Cloud()
-    ];
-    enemies = [
-        new Chicken(),
-        new Chicken(),
-        new Chicken()
-    ];
-    backgroundObjects = [
-        new BackgroundObject('img/5.Fondo/Capas/5.cielo_1920-1080px.png', 0),
-        new BackgroundObject('img//5.Fondo//Capas//3.Fondo3/1.png', 0),
-        new BackgroundObject('img/5.Fondo/Capas/2.Fondo2/1.png', 0),
-        new BackgroundObject('img/5.Fondo/Capas/1.suelo-fondo1/1.png', 0)
-    ];
-
+    clouds = level1.clouds;
+    enemies = level1.enemies;
+    backgroundObjects = level1.backgroundObjects;
     ctx;
     canvas;
     keyboard;
+    camera_x;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -34,11 +23,15 @@ class World {
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); //clears canvas
+       
+        this.ctx.translate(this.camera_x, 0);
 
         this.addObjectToMap(this.backgroundObjects);
         this.addObjectToMap(this.clouds);
         this.addToMap(this.character);
         this.addObjectToMap(this.enemies);
+
+        this.ctx.translate(-this.camera_x, 0);
 
 
 
@@ -47,6 +40,7 @@ class World {
         requestAnimationFrame(function () {
             self.draw();
         })
+
     }
 
     addObjectToMap(object) {
@@ -58,18 +52,18 @@ class World {
     addToMap(mo) {
         if (mo.oppositeDirection) {
             this.ctx.save();
-            this.ctx.translate(mo.width, 0); // versetzt Character um die übergebenen (x, y) Werte
-            this.ctx.scale(-1, 1); //flips Character in opposite direction by setting scaleX = -1
+            this.ctx.translate(mo.width, 0); // verschiebt den Character um die die breite des Characters
+            this.ctx.scale(-1, 1); //flips ctx in opposite direction by setting scaleX = -1
             mo.x = mo.x * -1;
             
         }
+
         this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
 
         if (mo.oppositeDirection) {
             this.ctx.restore();
             mo.x = mo.x * -1;
         }
-        
-
+    
     }
 }
