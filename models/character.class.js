@@ -12,6 +12,7 @@ class Character extends MovableObject {
         'img/2.Secuencias_Personaje-Pepe-corrección/2.Secuencia_caminata/W-26.png'
     ];
     world;
+    running_audio = new Audio('audio/running_2.mp3');
 
     constructor() {
         super().loadImage('img/2.Secuencias_Personaje-Pepe-corrección/2.Secuencia_caminata/W-21.png')
@@ -22,26 +23,25 @@ class Character extends MovableObject {
     animate() {
 
         setInterval(() => {
-            
-            if (this.world.keyboard.RIGHT) {
+            this.running_audio.pause();
+            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x ) {
                 this.x += this.movingSpeed;
                 this.oppositeDirection = false;
+                this.running_audio.play();
             }
 
-            if (this.world.keyboard.LEFT) {
+            if (this.world.keyboard.LEFT && this.x > -618) {
                 this.x -= this.movingSpeed;
                 this.oppositeDirection = true;
+                this.running_audio.play();
             }
-            this.world.camera_x = -this.x;
+            this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
 
         setInterval(() => {
 
             if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-                let i = this.currentImage % this.IMAGES_WALKING.length;
-                let path = this.IMAGES_WALKING[i];
-                this.img = this.imageCache[path];
-                this.currentImage++;;
+                this.playAnimation(this.IMAGES_WALKING);
             }
 
         }, 100);

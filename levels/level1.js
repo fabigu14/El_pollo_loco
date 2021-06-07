@@ -30,5 +30,6 @@ const level1 = new Level(
         new BackgroundObject('img//5.Fondo//Capas//3.Fondo3/2.png', 719*3),
         new BackgroundObject('img/5.Fondo/Capas/2.Fondo2/2.png', 719*3),
         new BackgroundObject('img/5.Fondo/Capas/1.suelo-fondo1/2.png', 719*3)
-    ]
+    ],
+    new Endboss()
 );
