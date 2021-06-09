@@ -40,7 +40,7 @@ class MovableObject {
 
     moveRight() {
         this.x += this.movingSpeed;
-        this.oppositeDirection = false;
+        
     }
 
     moveLeft() {
