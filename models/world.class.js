@@ -21,7 +21,7 @@ class World {
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); //clears canvas
-       
+
         this.ctx.translate(this.camera_x, 0);
 
         this.addObjectToMap(this.level.backgroundObjects);
@@ -30,7 +30,7 @@ class World {
         this.addObjectToMap(this.level.enemies);
         this.addToMap(this.level.endboss);
 
-        this.ctx.translate(-this.camera_x , 0);
+        this.ctx.translate(-this.camera_x, 0);
 
 
 
@@ -50,19 +50,28 @@ class World {
 
     addToMap(mo) {
         if (mo.oppositeDirection) {
-            this.ctx.save();
-            this.ctx.translate(mo.width, 0); // verschiebt den Character um die die breite des Characters
-            this.ctx.scale(-1, 1); //flips ctx in opposite direction by setting scaleX = -1
-            mo.x = mo.x * -1;
-            
+            this.flipImage(mo);
         }
 
-        this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+        mo.draw(this.ctx);
+        mo.drawFrame(this.ctx);
+
 
         if (mo.oppositeDirection) {
-            this.ctx.restore();
-            mo.x = mo.x * -1;
+            this.flipImageBack(mo);
         }
-    
+
+    }
+
+    flipImage(mo){
+        this.ctx.save();
+        this.ctx.translate(mo.width, 0); // verschiebt den Character um die die breite des Characters
+        this.ctx.scale(-1, 1); //flips ctx in opposite direction by setting scaleX = -1
+        mo.x = mo.x * -1;
+    }
+
+    flipImageBack(mo){
+        this.ctx.restore();
+        mo.x = mo.x * -1;
     }
 }
