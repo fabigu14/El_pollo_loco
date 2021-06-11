@@ -13,10 +13,28 @@ class World {
         this.keyboard = keyboard;
         this.setWorld();
         this.draw();
+        this.checkCollisions();
     }
 
     setWorld() {
         this.character.world = this;
+    }
+
+    checkCollisions(){
+        setInterval(() => {
+            this.level.enemies.forEach(enemy => {
+               if (this.character.isColliding(enemy)) {
+                  this.character.energy -= 5;
+                  this.isDead();
+               }
+            });
+        }, 200);
+    }
+
+    isDead(){
+        if(this.character.energy <= 0){
+
+        }
     }
 
     draw() {
@@ -31,8 +49,6 @@ class World {
         this.addToMap(this.level.endboss);
 
         this.ctx.translate(-this.camera_x, 0);
-
-
 
         //draw() is called frequently, depending on GPU
         let self = this;

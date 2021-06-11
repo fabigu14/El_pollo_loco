@@ -10,6 +10,7 @@ class MovableObject {
     oppositeDirection = false;
     speedY = 0;
     accaloration = 2.5;
+    energy = 100;
 
     applyGravity() {
         setInterval(() => {
@@ -21,16 +22,25 @@ class MovableObject {
         }, 1000 / 25);
     }
 
-    draw(ctx){
+    draw(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
 
-    drawFrame(ctx){
-        ctx.beginPath();
-        ctx.lineWidth = "5";
-        ctx.strokeStyle = "blue";
-        ctx.rect(this.x, this.y, this.width, this.height);
-        ctx.stroke();
+    drawFrame(ctx) {
+        if (this instanceof Character || this instanceof Chicken || this instanceof Endboss) {
+            ctx.beginPath();
+            ctx.lineWidth = "5";
+            ctx.strokeStyle = "blue";
+            ctx.rect(this.x, this.y, this.width, this.height);
+            ctx.stroke();
+        }
+    }
+
+    isColliding(mo){
+        return this.x + this.width > mo.x &&
+        this.y + this.height > mo.y &&
+        this.x < mo.x &&
+        this.y < mo.y + mo.height;
     }
 
     isAboveGround() {
@@ -52,7 +62,7 @@ class MovableObject {
 
     moveRight() {
         this.x += this.movingSpeed;
-        
+
     }
 
     moveLeft() {
@@ -60,11 +70,12 @@ class MovableObject {
     }
 
     playAnimation(images) {
-        let i = this.currentImage % this.IMAGES_WALKING.length;
+        let i = this.currentImage % images.length;
         let path = images[i];
         this.img = this.imageCache[path];
         this.currentImage++;;
     }
+
     jump() {
         this.speedY = 30;
     }
