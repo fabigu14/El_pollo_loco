@@ -33,6 +33,13 @@ class Character extends MovableObject {
         'img/2.Secuencias_Personaje-Pepe-corrección/5.Muerte/D-56.png',
         'img/2.Secuencias_Personaje-Pepe-corrección/5.Muerte/D-57.png'
     ];
+
+    IMAGES_HURT = [
+        'img/2.Secuencias_Personaje-Pepe-corrección/4.Herido/H-41.png',
+        'img/2.Secuencias_Personaje-Pepe-corrección/4.Herido/H-42.png',
+        'img/2.Secuencias_Personaje-Pepe-corrección/4.Herido/H-43.png'
+    ];
+
     world;
     running_audio = new Audio('audio/running_2.mp3');
 
@@ -41,6 +48,7 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_JUMPING);
         this.loadImages(this.IMAGES_DYING);
+        this.loadImages(this.IMAGES_HURT);
         this.applyGravity();
         this.animate();
     }
@@ -49,7 +57,7 @@ class Character extends MovableObject {
 
         setInterval(() => {
             this.running_audio.pause();
-            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x ) {
+            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.moveRight();
                 this.oppositeDirection = false;
                 this.running_audio.play();
@@ -61,7 +69,7 @@ class Character extends MovableObject {
                 this.running_audio.play();
             }
 
-            if(this.world.keyboard.UP && !this.isAboveGround()){
+            if (this.world.keyboard.UP && !this.isAboveGround()) {
                 this.jump();
             }
             this.world.camera_x = -this.x + 100;
@@ -69,10 +77,13 @@ class Character extends MovableObject {
 
         setInterval(() => {
 
-            if(this.isAboveGround()){
+            if (this.isDead()) {
+                this.playAnimation(this.IMAGES_DYING);
+            } else if (this.isHurt()) {
+                this.playAnimation(this.IMAGES_HURT);
+            } else if (this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_JUMPING);
-            }
-            else{
+            } else {
                 if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
                     this.playAnimation(this.IMAGES_WALKING);
                 }

@@ -6,6 +6,7 @@ class World {
     canvas;
     keyboard;
     camera_x;
+    statusBar = new StatusBar();
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -20,21 +21,15 @@ class World {
         this.character.world = this;
     }
 
-    checkCollisions(){
+    checkCollisions() {
         setInterval(() => {
             this.level.enemies.forEach(enemy => {
-               if (this.character.isColliding(enemy)) {
-                  this.character.energy -= 5;
-                  this.isDead();
-               }
+                if (this.character.isColliding(enemy)) {
+                    this.character.hit();
+                    this.statusBar.setPercentage(this.character.energy);
+                }
             });
         }, 200);
-    }
-
-    isDead(){
-        if(this.character.energy <= 0){
-
-        }
     }
 
     draw() {
@@ -44,6 +39,11 @@ class World {
 
         this.addObjectToMap(this.level.backgroundObjects);
         this.addObjectToMap(this.level.clouds);
+
+        this.ctx.translate(-this.camera_x, 0);
+        this.addToMap(this.statusBar)
+        this.ctx.translate(this.camera_x, 0);
+
         this.addToMap(this.character);
         this.addObjectToMap(this.level.enemies);
         this.addToMap(this.level.endboss);
@@ -52,7 +52,7 @@ class World {
 
         //draw() is called frequently, depending on GPU
         let self = this;
-        requestAnimationFrame(function () {
+        requestAnimationFrame(function() {
             self.draw();
         })
 
@@ -79,14 +79,14 @@ class World {
 
     }
 
-    flipImage(mo){
+    flipImage(mo) {
         this.ctx.save();
         this.ctx.translate(mo.width, 0); // verschiebt den Character um die die breite des Characters
         this.ctx.scale(-1, 1); //flips ctx in opposite direction by setting scaleX = -1
         mo.x = mo.x * -1;
     }
 
-    flipImageBack(mo){
+    flipImageBack(mo) {
         this.ctx.restore();
         mo.x = mo.x * -1;
     }
