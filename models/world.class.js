@@ -9,6 +9,7 @@ class World {
     energyBar = new EnergyBar();
     coinBar = new CoinBar();
     bottleBar = new BottleBar();
+    throwableObjects = [];
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -16,22 +17,34 @@ class World {
         this.keyboard = keyboard;
         this.setWorld();
         this.draw();
-        this.checkCollisions();
+        this.run();
     }
 
     setWorld() {
         this.character.world = this;
     }
 
-    checkCollisions() {
+    run() {
         setInterval(() => {
-            this.level.enemies.forEach(enemy => {
-                if (this.character.isColliding(enemy)) {
-                    this.character.hit();
-                    this.energyBar.setPercentage(this.character.energy);
-                }
-            });
+            this.checkCollisions();
+            this.checkThrowObjects();
         }, 200);
+    }
+
+    checkThrowObjects() {
+        if (this.keyboard.SPACE) {
+            let bottle = new ThrowableObject(this.character.x + 50, this.character.y + 50)
+            this.throwableObjects.push(bottle);
+        }
+    }
+
+    checkCollisions() {
+        this.level.enemies.forEach(enemy => {
+            if (this.character.isColliding(enemy)) {
+                this.character.hit();
+                this.energyBar.setPercentage(this.character.energy);
+            }
+        });
     }
 
     draw() {
@@ -48,6 +61,7 @@ class World {
         this.addToMap(this.bottleBar);
         this.ctx.translate(this.camera_x, 0);
 
+        this.addObjectToMap(this.throwableObjects);
         this.addToMap(this.character);
         this.addObjectToMap(this.level.enemies);
         this.addToMap(this.level.endboss);
