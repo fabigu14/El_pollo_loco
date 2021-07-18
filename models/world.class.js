@@ -9,6 +9,8 @@ class World {
     energyBar = new EnergyBar();
     coinBar = new CoinBar();
     bottleBar = new BottleBar();
+    coins = [];
+    bottles = [];
     throwableObjects = [];
 
     constructor(canvas, keyboard) {
@@ -16,12 +18,36 @@ class World {
         this.canvas = canvas;
         this.keyboard = keyboard;
         this.setWorld();
+        this.setCollectalbleObjects();
         this.draw();
         this.run();
     }
 
     setWorld() {
         this.character.world = this;
+    }
+
+    setCollectalbleObjects(){
+        this.createCoins();
+        this.createBottles();
+    }
+
+    createCoins(){
+        let amountOfCoins = 2 + Math.random() * 3;
+    
+        for (let i = 0; i < amountOfCoins; i++) {
+            
+            this.coins.push(new Coin());
+        }
+    }
+
+    createBottles(){
+        let amountOfBottles = 5 + Math.random() * 12;
+
+        for (let i = 0; i < amountOfBottles; i++) {
+            
+            this.bottles.push(new Bottle());
+        }
     }
 
     run() {
@@ -62,6 +88,8 @@ class World {
         this.ctx.translate(this.camera_x, 0);
 
         this.addObjectToMap(this.throwableObjects);
+        this.addObjectToMap(this.coins);
+        this.addObjectToMap(this.bottles);  
         this.addToMap(this.character);
         this.addObjectToMap(this.level.enemies);
         this.addToMap(this.level.endboss);

@@ -13,11 +13,10 @@ class Endboss extends MovableObject{
     height = 400;
     width = 250;
     y = 55;
-    constructor(){
+    constructor(level_end_x){
         super().loadImage('img/4.Secuencias_Enemy_gigantón-Doña_Gallinota-/2.Ateción-ataque/1.Alerta/G5.png')
         this.loadImages(this.IMAGES_WALKING);
-        this.x = 400;
-
+        this.x = level_end_x + 300;
         this.animate();
     }
 
