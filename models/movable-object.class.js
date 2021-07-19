@@ -32,8 +32,8 @@ class MovableObject extends DrawableObject {
             this.y < mo.y + mo.height;
     }
 
-    hit() {
-        this.energy -= 5;
+    hit(damage) {
+        this.energy -= damage;
 
         if (this.energy < 0) {
             this.energy = 0;
