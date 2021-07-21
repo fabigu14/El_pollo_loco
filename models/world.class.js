@@ -57,16 +57,15 @@ class World {
             this.checkEnemyCollisions();
             this.checkCoCollisions(this.coins);
             this.checkCoCollisions(this.bottles);
-            this.checkEnemyHit();
+            this.checkEndbossHit();
             this.checkThrowObjects();
         }, 200);
     }
 
-    checkEnemyHit() {
+    checkEndbossHit() {
         this.throwableObjects.forEach(bottle => {
             if (this.level.endboss.isColliding(bottle)) {
-                console.log('hit endboss');
-                this.level.endboss.hit(40);
+                this.level.endboss.hit(50);
                 this.throwableObjects.splice(this.throwableObjects.indexOf(bottle));
             }
         });

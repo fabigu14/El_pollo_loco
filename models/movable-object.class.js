@@ -6,9 +6,11 @@ class MovableObject extends DrawableObject {
     accaloration = 2.5;
     energy = 100;
     lastHit = 0;
+    // lastHitEndboss = 0;
 
     applyGravity() {
         setInterval(() => {
+
             if (this.isAboveGround() || this.speedY > 0) {
                 this.y -= this.speedY;
                 this.speedY -= this.accaloration;
@@ -18,8 +20,10 @@ class MovableObject extends DrawableObject {
     }
 
     isAboveGround() {
-        if (this instanceof ThrowableObject) {
+        if (this instanceof ThrowableObject || this.isDead()) {
             return true;
+        } else if (this instanceof Endboss) {
+            return false;
         } else {
             return this.y < 180;
         }
@@ -35,15 +39,22 @@ class MovableObject extends DrawableObject {
     hit(damage) {
         this.energy -= damage;
 
-        if (this.energy < 0) {
-            this.energy = 0;
-        } else {
+        if (this.energy >= 0) {
             this.lastHit = new Date().getTime();
         }
     }
 
     isDead() {
-        return this.energy == 0;
+        return this.energy <= 0;
+    }
+
+    isLastHit() {
+        let timePassed;
+        timePassed = new Date().getTime() - this.lastHit;
+
+
+        timePassed = timePassed / 1000;
+        return this.energy <= 0 && timePassed < 0.3;
     }
 
     isHurt() {
@@ -71,5 +82,10 @@ class MovableObject extends DrawableObject {
 
     jump() {
         this.speedY = 30;
+    }
+
+    death(speedY, accaloration) {
+        this.speedY = speedY;
+        this.accaloration = accaloration;
     }
 }
