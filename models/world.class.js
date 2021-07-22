@@ -14,6 +14,8 @@ class World {
     bottles = [];
     bottlesCollected = [];
     throwableObjects = [];
+    gameHasStarted = false;
+    gameOver = false;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -121,21 +123,13 @@ class World {
 
         this.ctx.translate(this.camera_x, 0);
 
-        this.addObjectToMap(this.level.backgroundObjects);
-        this.addObjectToMap(this.level.clouds);
+        this.addBackground();
         //space for position fixed elements
         this.ctx.translate(-this.camera_x, 0);
-        this.addToMap(this.energyBar);
-        this.addToMap(this.coinBar);
-        this.addToMap(this.bottleBar);
+        this.addStatusBars();
         this.ctx.translate(this.camera_x, 0);
 
-        this.addObjectToMap(this.throwableObjects);
-        this.addObjectToMap(this.coins);
-        this.addObjectToMap(this.bottles);
-        this.addToMap(this.character);
-        this.addObjectToMap(this.level.enemies);
-        this.addToMap(this.level.endboss);
+        this.addGameObjects();
 
         this.ctx.translate(-this.camera_x, 0);
 
@@ -145,6 +139,26 @@ class World {
             self.draw();
         })
 
+    }
+
+    addBackground() {
+        this.addObjectToMap(this.level.backgroundObjects);
+        this.addObjectToMap(this.level.clouds);
+    }
+
+    addStatusBars() {
+        this.addToMap(this.energyBar);
+        this.addToMap(this.coinBar);
+        this.addToMap(this.bottleBar);
+    }
+
+    addGameObjects() {
+        this.addObjectToMap(this.throwableObjects);
+        this.addObjectToMap(this.coins);
+        this.addObjectToMap(this.bottles);
+        this.addToMap(this.character);
+        this.addObjectToMap(this.level.enemies);
+        this.addToMap(this.level.endboss);
     }
 
     addObjectToMap(object) {
@@ -179,4 +193,5 @@ class World {
         this.ctx.restore();
         mo.x = mo.x * -1;
     }
+
 }
