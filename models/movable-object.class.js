@@ -6,7 +6,9 @@ class MovableObject extends DrawableObject {
     accaloration = 2.5;
     energy = 100;
     lastHit = 0;
+    gameHasStarted = false;
     // lastHitEndboss = 0;
+
 
     applyGravity() {
         setInterval(() => {
@@ -65,12 +67,18 @@ class MovableObject extends DrawableObject {
     }
 
     moveRight() {
-        this.x += this.movingSpeed;
+        if (this.gameHasStarted) {
+            this.x += this.movingSpeed;
+        }
+
 
     }
 
     moveLeft() {
-        this.x -= this.movingSpeed;
+        if (this.gameHasStarted) {
+            this.x -= this.movingSpeed;
+        }
+
     }
 
     playAnimation(images) {

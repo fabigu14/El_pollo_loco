@@ -1,7 +1,8 @@
 class World {
 
     character = new Character();
-    level = level1;
+    startscreen = [new Startscreen()];
+    level;
     ctx;
     canvas;
     keyboard;
@@ -23,12 +24,23 @@ class World {
         this.keyboard = keyboard;
         this.setWorld();
         this.setCollectalbleObjects();
+        this.checkGameHasStarted();
         this.draw();
         this.run();
     }
 
     setWorld() {
         this.character.world = this;
+    }
+
+    checkGameHasStarted() {
+        setInterval(() => {
+            if (this.keyboard.ENTER) {
+                this.gameHasStarted = true;
+                this.level = level1;
+            }
+        }, 1000 / 60);
+
     }
 
     setCollectalbleObjects() {
@@ -56,11 +68,13 @@ class World {
 
     run() {
         setInterval(() => {
-            this.checkEnemyCollisions();
-            this.checkCoCollisions(this.coins);
-            this.checkCoCollisions(this.bottles);
-            this.checkEndbossHit();
-            this.checkThrowObjects();
+            if (this.gameHasStarted) {
+                this.checkEnemyCollisions();
+                this.checkCoCollisions(this.coins);
+                this.checkCoCollisions(this.bottles);
+                this.checkEndbossHit();
+                this.checkThrowObjects();
+            }
         }, 200);
     }
 
@@ -120,18 +134,26 @@ class World {
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); //clears canvas
+        if (this.gameHasStarted) {
+            this.ctx.translate(this.camera_x, 0);
 
-        this.ctx.translate(this.camera_x, 0);
+            this.addBackground();
+            //space for position fixed elements
+            this.ctx.translate(-this.camera_x, 0);
+            this.addStatusBars();
+            this.ctx.translate(this.camera_x, 0);
 
-        this.addBackground();
-        //space for position fixed elements
-        this.ctx.translate(-this.camera_x, 0);
-        this.addStatusBars();
-        this.ctx.translate(this.camera_x, 0);
+            this.addGameObjects();
 
-        this.addGameObjects();
 
-        this.ctx.translate(-this.camera_x, 0);
+
+
+
+            this.ctx.translate(-this.camera_x, 0);
+        } else {
+            this.drawStartSreen();
+        }
+
 
         //draw() is called frequently, depending on GPU
         let self = this;
@@ -139,6 +161,12 @@ class World {
             self.draw();
         })
 
+    }
+
+    drawStartSreen() {
+        this.addObjectToMap(this.startscreen[0].background);
+        this.ctx.fillStyle = "#80808073";
+        this.ctx.fillRect(0, 0, 720, 480);
     }
 
     addBackground() {
