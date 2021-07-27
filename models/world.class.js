@@ -3,6 +3,7 @@ class World {
     character = new Character();
     level = level1;
     ctx;
+    gameOver = new GameOver(canvas);
     canvas;
     keyboard;
     camera_x;
@@ -15,7 +16,7 @@ class World {
     bottlesCollected = [];
     throwableObjects = [];
     gameHasStarted = false;
-    gameOver = false;
+    gameIsOver = false;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -31,6 +32,7 @@ class World {
 
     setWorld() {
         this.character.world = this;
+        this.gameOver.world = this;
     }
 
     checkGameHasStarted() {
@@ -82,8 +84,19 @@ class World {
                 this.checkCoCollisions(this.bottles);
                 this.checkEndbossHit();
                 this.checkThrowObjects();
+                this.checkGameIsOver();
             }
         }, 200);
+    }
+
+    checkGameIsOver() {
+        if (this.character.isDead()) {
+            setTimeout(() => {
+                this.gameIsOver = true;
+                this.gameOver.gameIsOver = true;
+            }, 2000);
+
+        }
     }
 
     checkEndbossHit() {
@@ -152,13 +165,13 @@ class World {
 
         this.addGameObjects();
 
-
-
-
-
         this.ctx.translate(-this.camera_x, 0);
         if (!this.gameHasStarted) {
             this.drawStartSreen();
+        }
+
+        if (this.gameIsOver) {
+            this.drawGameOver();
         }
 
         //draw() is called frequently, depending on GPU
@@ -170,12 +183,26 @@ class World {
     }
 
     drawStartSreen() {
-        this.ctx.fillStyle = "#80808073";
-        this.ctx.fillRect(0, 0, 720, 480);
+        this.drawBackground();
+        this.setTextProperties();
+        this.ctx.fillText("Click or press enter to start", this.canvas.width / 2, this.canvas.height / 2);
+    }
+
+    drawGameOver() {
+        this.drawBackground();
+        this.setTextProperties();
+        this.ctx.fillText(this.gameOver.text, this.gameOver.x, this.gameOver.y);
+    }
+
+    setTextProperties() {
         this.ctx.font = "bold 55px 'VT323', monospace";
         this.ctx.fillStyle = "black";
         this.ctx.textAlign = "center";
-        this.ctx.fillText("Click or press enter to start", this.canvas.width / 2, this.canvas.height / 2);
+    }
+
+    drawBackground() {
+        this.ctx.fillStyle = "#80808073";
+        this.ctx.fillRect(0, 0, 720, 480);
     }
 
     addBackground() {
