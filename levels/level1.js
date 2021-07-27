@@ -1,8 +1,6 @@
 level_end_x = 2255;
-
 const level1 = new Level(
-    level_end_x,
-    [
+    level_end_x, [
         new Cloud()
     ], [
         new Chicken(),

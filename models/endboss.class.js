@@ -70,8 +70,6 @@ class Endboss extends MovableObject {
                 this.playAnimation(this.IMAGES_DEAD);
             }
             if (this.isLastHit()) {
-                console.log('last hit');
-                // this.playAnimation(this.IMAGES_DEAD);
                 this.death(15, 1);
             } else if (this.isHurt() && !this.isDead()) {
                 this.playAnimation(this.IMAGES_HURT);

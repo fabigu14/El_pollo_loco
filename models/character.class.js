@@ -40,7 +40,7 @@ class Character extends MovableObject {
         'img/2.Secuencias_Personaje-Pepe-corrección/4.Herido/H-43.png'
     ];
 
-    world;
+    // world;
     running_audio = new Audio('audio/running_2.mp3');
 
     constructor() {

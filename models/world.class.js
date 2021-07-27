@@ -1,8 +1,7 @@
 class World {
 
     character = new Character();
-    startscreen = [new Startscreen()];
-    level;
+    level = level1;
     ctx;
     canvas;
     keyboard;
@@ -29,15 +28,24 @@ class World {
         this.run();
     }
 
+
     setWorld() {
         this.character.world = this;
     }
 
     checkGameHasStarted() {
         setInterval(() => {
-            if (this.keyboard.ENTER) {
+            if (this.keyboard.ENTER || this.keyboard.CLICK) {
                 this.gameHasStarted = true;
-                this.level = level1;
+                this.character.gameHasStarted = true
+                let chicken = this.level.enemies;
+                chicken.forEach(enemy => {
+                    enemy.gameHasStarted = true;
+                });
+                let clouds = this.level.clouds;
+                clouds.forEach(cloud => {
+                    cloud.gameHasStarted = true;
+                });
             }
         }, 1000 / 60);
 
@@ -134,26 +142,24 @@ class World {
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); //clears canvas
-        if (this.gameHasStarted) {
-            this.ctx.translate(this.camera_x, 0);
+        this.ctx.translate(this.camera_x, 0);
 
-            this.addBackground();
-            //space for position fixed elements
-            this.ctx.translate(-this.camera_x, 0);
-            this.addStatusBars();
-            this.ctx.translate(this.camera_x, 0);
+        this.addBackground();
+        //space for position fixed elements
+        this.ctx.translate(-this.camera_x, 0);
+        this.addStatusBars();
+        this.ctx.translate(this.camera_x, 0);
 
-            this.addGameObjects();
-
+        this.addGameObjects();
 
 
 
 
-            this.ctx.translate(-this.camera_x, 0);
-        } else {
+
+        this.ctx.translate(-this.camera_x, 0);
+        if (!this.gameHasStarted) {
             this.drawStartSreen();
         }
-
 
         //draw() is called frequently, depending on GPU
         let self = this;
@@ -164,9 +170,12 @@ class World {
     }
 
     drawStartSreen() {
-        this.addObjectToMap(this.startscreen[0].background);
         this.ctx.fillStyle = "#80808073";
         this.ctx.fillRect(0, 0, 720, 480);
+        this.ctx.font = "bold 55px 'VT323', monospace";
+        this.ctx.fillStyle = "black";
+        this.ctx.textAlign = "center";
+        this.ctx.fillText("Click or press enter to start", this.canvas.width / 2, this.canvas.height / 2);
     }
 
     addBackground() {

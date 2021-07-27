@@ -7,9 +7,17 @@ function init() {
     world = new World(canvas, keyboard);
 }
 
+window.addEventListener('mousedown', function(e) {
+    // React to the mouse down event
+    keyboard.CLICK = true;
+});
+
+window.addEventListener('mouseup', function(e) {
+    // React to the mouse down event
+    keyboard.CLICK = false;
+});
 
 window.addEventListener('keydown', e => {
-
 
     if (e.keyCode == 39) {
         keyboard.RIGHT = true;

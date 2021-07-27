@@ -7,7 +7,6 @@ class MovableObject extends DrawableObject {
     energy = 100;
     lastHit = 0;
     gameHasStarted = false;
-    // lastHitEndboss = 0;
 
 
     applyGravity() {
