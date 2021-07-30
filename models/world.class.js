@@ -1,8 +1,8 @@
 class World {
 
     character = new Character();
-    level = level1;
     ctx;
+    level;
     gameOver = new GameOver(canvas);
     canvas;
     keyboard;
@@ -22,6 +22,7 @@ class World {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.level = new Level(level1);
         this.setWorld();
         this.setCollectalbleObjects();
         this.checkGameHasStarted();
@@ -32,7 +33,6 @@ class World {
 
     setWorld() {
         this.character.world = this;
-        this.gameOver.world = this;
     }
 
     checkGameHasStarted() {
@@ -85,6 +85,7 @@ class World {
                 this.checkEndbossHit();
                 this.checkThrowObjects();
                 this.checkGameIsOver();
+                this.restartGame();
             }
         }, 200);
     }
@@ -94,8 +95,15 @@ class World {
             setTimeout(() => {
                 this.gameIsOver = true;
                 this.gameOver.gameIsOver = true;
+
             }, 2000);
 
+        }
+    }
+
+    restartGame() {
+        if (this.gameIsOver && this.keyboard.CLICK) {
+            init();
         }
     }
 
