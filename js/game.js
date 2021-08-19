@@ -3,8 +3,14 @@ let world;
 let keyboard = new Keyboard();
 
 function init() {
+
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
+    console.log(world);
+}
+
+function restartGame() {
+    location.reload();
 }
 
 window.addEventListener('mousedown', function(e) {

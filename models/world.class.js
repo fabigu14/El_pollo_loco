@@ -85,9 +85,10 @@ class World {
                 this.checkEndbossHit();
                 this.checkThrowObjects();
                 this.checkGameIsOver();
-                this.restartGame();
+
             }
         }, 200);
+        this.restartGame();
     }
 
     checkGameIsOver() {
@@ -102,9 +103,18 @@ class World {
     }
 
     restartGame() {
-        if (this.gameIsOver && this.keyboard.CLICK) {
-            init();
-        }
+        setInterval(() => {
+            if (this.gameIsOver && this.keyboard.CLICK) {
+                restartGame();
+            }
+        }, 1000 / 60);
+
+    }
+
+    resetChicken() {
+        this.level.enemies.forEach(enemy => {
+            enemy.x = 200 + Math.random() * 500;
+        });
     }
 
     checkEndbossHit() {
