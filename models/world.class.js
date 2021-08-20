@@ -4,6 +4,7 @@ class World {
     ctx;
     level;
     gameOver = new GameOver(canvas);
+    levelCompleted = new LevelCompleted(canvas);
     canvas;
     keyboard;
     camera_x;
@@ -17,6 +18,7 @@ class World {
     throwableObjects = [];
     gameHasStarted = false;
     gameIsOver = false;
+    levelIsCompleted = false;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -85,10 +87,21 @@ class World {
                 this.checkEndbossHit();
                 this.checkThrowObjects();
                 this.checkGameIsOver();
-
+                this.checkLevelIsCompleted();
             }
         }, 200);
         this.restartGame();
+    }
+
+    checkLevelIsCompleted() {
+        if (this.level.endboss.isDead()) {
+            setTimeout(() => {
+                this.levelIsCompleted = true;
+                this.levelCompleted.levelIsCompleted = true;
+
+            }, 2000);
+
+        }
     }
 
     checkGameIsOver() {
@@ -169,6 +182,10 @@ class World {
                 this.energyBar.setPercentage(this.character.energy);
             }
         });
+        if (this.character.isColliding(this.level.endboss)) {
+            this.character.hit(20);
+            this.energyBar.setPercentage(this.character.energy);
+        }
     }
 
     draw() {
@@ -192,12 +209,22 @@ class World {
             this.drawGameOver();
         }
 
+        if (this.levelIsCompleted) {
+            this.drawWinningText();
+        }
+
         //draw() is called frequently, depending on GPU
         let self = this;
         requestAnimationFrame(function() {
             self.draw();
         })
 
+    }
+
+    drawWinningText() {
+        this.drawBackground();
+        this.setTextProperties();
+        this.ctx.fillText(this.levelCompleted.text, this.levelCompleted.x, this.levelCompleted.y);
     }
 
     drawStartSreen() {
