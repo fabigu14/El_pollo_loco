@@ -7,6 +7,7 @@ class MovableObject extends DrawableObject {
     energy = 100;
     lastHit = 0;
     gameHasStarted = false;
+    endboss_hurt = new Audio('audio/chicken.mp3');
 
 
     applyGravity() {
@@ -38,10 +39,18 @@ class MovableObject extends DrawableObject {
     }
 
     hit(damage) {
+
+        this.playHitSound();
         this.energy -= damage;
 
         if (this.energy >= 0) {
             this.lastHit = new Date().getTime();
+        }
+    }
+
+    playHitSound() {
+        if (this instanceof Endboss) {
+            this.endboss_hurt.play();
         }
     }
 

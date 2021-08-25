@@ -19,6 +19,7 @@ class World {
     gameHasStarted = false;
     gameIsOver = false;
     levelIsCompleted = false;
+    game_music = new Audio('audio/music1.mp3');
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -88,9 +89,16 @@ class World {
                 this.checkThrowObjects();
                 this.checkGameIsOver();
                 this.checkLevelIsCompleted();
+                this.playMusic();
             }
         }, 200);
         this.restartGame();
+    }
+
+    playMusic() {
+        if (this.gameHasStarted) {
+            this.game_music.play();
+        }
     }
 
     checkLevelIsCompleted() {
@@ -117,7 +125,7 @@ class World {
 
     restartGame() {
         setInterval(() => {
-            if (this.gameIsOver && this.keyboard.CLICK) {
+            if (this.gameIsOver && this.keyboard.CLICK || this.gameIsOver && this.keyboard.ENTER) {
                 restartGame();
             }
         }, 1000 / 60);
