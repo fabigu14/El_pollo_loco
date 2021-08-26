@@ -8,6 +8,7 @@ class MovableObject extends DrawableObject {
     lastHit = 0;
     gameHasStarted = false;
     endboss_hurt = new Audio('audio/chicken.mp3');
+    character_hurt = new Audio('audio/character_hurt.mp3');
 
 
     applyGravity() {
@@ -32,10 +33,18 @@ class MovableObject extends DrawableObject {
     }
 
     isColliding(mo) {
-        return this.x + this.width > mo.x &&
-            this.y + this.height > mo.y &&
-            this.x < mo.x &&
-            this.y < mo.y + mo.height;
+        if (this instanceof Character && mo instanceof CollectableObject) {
+
+            return (this.x + 10) + (this.width - 20) > (mo.x + 15) &&
+                (this.y + 90) + (this.height - 100) > (mo.y + 15) &&
+                this.x < (mo.x + 15) + (mo.width - 30) &&
+                this.y < (mo.y + 15) + (mo.height - 30);
+        } else {
+            return this.x + this.width > mo.x &&
+                this.y + this.height > mo.y &&
+                this.x < mo.x + mo.width &&
+                this.y < mo.y + mo.height;
+        }
     }
 
     hit(damage) {
@@ -51,6 +60,8 @@ class MovableObject extends DrawableObject {
     playHitSound() {
         if (this instanceof Endboss) {
             this.endboss_hurt.play();
+        } else if (this instanceof Character) {
+            this.character_hurt.play();
         }
     }
 

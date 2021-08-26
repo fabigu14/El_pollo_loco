@@ -160,27 +160,22 @@ class World {
     checkCoCollisions(co) {
         co.forEach(collectableObject => {
             if (this.character.isColliding(collectableObject)) {
-                let index = co.indexOf(collectableObject);
+                collectableObject.collectObject();
                 this.updateCoStatusBar(collectableObject);
-                co.splice(index, 1);
             }
         });
     }
 
     updateCoStatusBar(co) {
         if (co instanceof Coin) {
-            this.addToCollected(this.coinsCollected, co);
+
             this.coinBar.setPercentage(this.coinsCollected.length * 20);
         } else if (co instanceof Bottle) {
-            this.addToCollected(this.bottlesCollected, co);
+
             this.bottleBar.setPercentage(this.bottlesCollected.length * 20);
         } else if (co instanceof ThrowableObject) {
             this.bottleBar.setPercentage(this.bottlesCollected.length * 20);
         }
-    }
-
-    addToCollected(arr, co) {
-        arr.push(co);
     }
 
     checkEnemyCollisions() {

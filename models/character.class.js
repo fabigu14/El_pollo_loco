@@ -42,6 +42,7 @@ class Character extends MovableObject {
 
     // world;
     running_audio = new Audio('audio/running_2.mp3');
+    jumping_audio = new Audio('audio/jump.mp3');
 
     constructor() {
         super().loadImage('img/2.Secuencias_Personaje-Pepe-corrección/2.Secuencia_caminata/W-21.png')
@@ -71,6 +72,7 @@ class Character extends MovableObject {
 
             if (this.world.keyboard.UP && !this.isAboveGround()) {
                 this.jump();
+                this.jumping_audio.play();
             }
             this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
