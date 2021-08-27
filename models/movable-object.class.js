@@ -35,10 +35,13 @@ class MovableObject extends DrawableObject {
     isColliding(mo) {
         if (this instanceof Character && mo instanceof CollectableObject) {
 
-            return (this.x + 10) + (this.width - 20) > (mo.x + 15) &&
-                (this.y + 90) + (this.height - 100) > (mo.y + 15) &&
-                this.x < (mo.x + 15) + (mo.width - 30) &&
-                this.y < (mo.y + 15) + (mo.height - 30);
+            return !(
+                ((this.y + 90) + (this.height - 100) < (mo.y + 15)) ||
+                ((this.y + 90) > (mo.y + 15) + (mo.height - 30)) ||
+                ((this.x + 10) + (this.width - 20) < (mo.x + 15)) ||
+                ((this.x + 10) > (mo.x + 15) + (mo.width - 30))
+            );
+
         } else {
             return this.x + this.width > mo.x &&
                 this.y + this.height > mo.y &&

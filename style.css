@@ -8,3 +8,27 @@ body {
 canvas {
     background-color: black;
 }
+
+.key-description {
+    width: 720px;
+    margin-top: 30px;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.row-pairs {
+    margin-bottom: 20px;
+    display: flex;
+}
+
+.single-key {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 15px;
+}
+
+.key-description span {
+    margin-right: 15px;
+}
