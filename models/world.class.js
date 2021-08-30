@@ -20,6 +20,9 @@ class World {
     gameIsOver = false;
     levelIsCompleted = false;
     game_music = new Audio('audio/music1.mp3');
+    winning_music = new Audio('audio/mariachi.mp3');
+    losing_music = new Audio('audio/sad_trumpet.mp3');
+    runInterval;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -31,6 +34,7 @@ class World {
         this.checkGameHasStarted();
         this.draw();
         this.run();
+        // this.runInterval = setInterval(this.run, 200);
     }
 
 
@@ -80,7 +84,11 @@ class World {
     }
 
     run() {
-        setInterval(() => {
+        this.runInterval = setInterval(() => {
+            if (this.gameHasStarted) {
+                this.playMusic();
+            }
+
             if (this.gameHasStarted) {
                 this.checkEnemyCollisions();
                 this.checkCoCollisions(this.coins);
@@ -89,10 +97,8 @@ class World {
                 this.checkThrowObjects();
                 this.checkGameIsOver();
                 this.checkLevelIsCompleted();
-                this.playMusic();
             }
         }, 200);
-        this.restartGame();
     }
 
     playMusic() {
@@ -101,23 +107,52 @@ class World {
         }
     }
 
+    stopMusic() {
+        this.game_music.pause();
+    }
+
     checkLevelIsCompleted() {
         if (this.level.endboss.isDead()) {
+            clearInterval(this.runInterval);
+            this.stopMusic();
+            setTimeout(() => {
+                this.playWinningMusic();
+            }, 500);
+
             setTimeout(() => {
                 this.levelIsCompleted = true;
                 this.levelCompleted.levelIsCompleted = true;
-
+                this.restartGame();
             }, 2000);
 
         }
     }
 
+    playWinningMusic() {
+
+        this.winning_music.play();
+
+        setTimeout(() => {
+            this.winning_music.pause();
+        }, 6500);
+    }
+
+    playLosingMusic() {
+        this.losing_music.play();
+        setTimeout(() => {
+            this.losing_music.pause();
+        }, 6000);
+    }
+
     checkGameIsOver() {
         if (this.character.isDead()) {
+            this.stopMusic();
+            this.playLosingMusic();
             setTimeout(() => {
                 this.gameIsOver = true;
                 this.gameOver.gameIsOver = true;
-
+                // clearInterval(this.runInterval);
+                this.restartGame();
             }, 2000);
 
         }
@@ -125,7 +160,7 @@ class World {
 
     restartGame() {
         setInterval(() => {
-            if (this.gameIsOver && this.keyboard.CLICK || this.gameIsOver && this.keyboard.ENTER) {
+            if (this.gameIsOver && this.keyboard.CLICK || this.gameIsOver && this.keyboard.ENTER || this.levelIsCompleted && this.keyboard.ENTER) {
                 restartGame();
             }
         }, 1000 / 60);
