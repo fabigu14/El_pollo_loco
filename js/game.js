@@ -1,6 +1,7 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let isFullscreen = false;
 
 function init() {
 
@@ -12,10 +13,27 @@ function restartGame() {
     location.reload();
 }
 
+function setFullscreen() {
+    canvas.requestFullscreen();
+    isFullscreen = true;
+}
+
 window.addEventListener('mousedown', function(e) {
-    // React to the mouse down event
-    keyboard.CLICK = true;
+    //React to the mouse down event
+
+    if (isClickOnCanvas(e)) {
+        keyboard.CLICK = true;
+    }
 });
+
+
+function isClickOnCanvas(e) {
+    let rect = canvas.getBoundingClientRect();
+
+    return (e.x > rect.x) && (e.x < (rect.x + rect.width)) &&
+        (e.y > rect.y) && (e.y < (rect.y + rect.height));
+
+}
 
 window.addEventListener('mouseup', function(e) {
     // React to the mouse down event
@@ -43,6 +61,7 @@ window.addEventListener('keydown', e => {
         keyboard.ENTER = true;
     }
 });
+
 
 window.addEventListener('keyup', e => {
     if (e.keyCode == 39) {

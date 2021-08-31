@@ -34,7 +34,7 @@ class World {
         this.checkGameHasStarted();
         this.draw();
         this.run();
-        // this.runInterval = setInterval(this.run, 200);
+
     }
 
 
@@ -146,12 +146,13 @@ class World {
 
     checkGameIsOver() {
         if (this.character.isDead()) {
+            clearInterval(this.runInterval);
             this.stopMusic();
             this.playLosingMusic();
             setTimeout(() => {
                 this.gameIsOver = true;
                 this.gameOver.gameIsOver = true;
-                // clearInterval(this.runInterval);
+
                 this.restartGame();
             }, 2000);
 
