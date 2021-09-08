@@ -11,6 +11,8 @@ class World {
     energyBar = new EnergyBar();
     coinBar = new CoinBar();
     bottleBar = new BottleBar();
+    sound = new Sound();
+    music = new Music();
     coins = [];
     coinsCollected = [];
     bottles = [];
@@ -235,11 +237,38 @@ class World {
         //space for position fixed elements
         this.ctx.translate(-this.camera_x, 0);
         this.addStatusBars();
+        
         this.ctx.translate(this.camera_x, 0);
 
         this.addGameObjects();
 
         this.ctx.translate(-this.camera_x, 0);
+
+        this.drawOverlay();
+
+        this.drawSoundOptions();
+        
+        this.recallDraw();
+        
+    }
+
+    drawSoundOptions(){
+        
+        this.addToMap(this.sound);
+        
+    }
+
+
+    //draw() is called frequently, depending on GPU
+    recallDraw(){
+        let self = this;
+        requestAnimationFrame(function() {
+            self.draw();
+        })
+
+    }
+
+    drawOverlay(){
         if (!this.gameHasStarted) {
             this.drawStartSreen();
         }
@@ -251,13 +280,6 @@ class World {
         if (this.levelIsCompleted) {
             this.drawWinningText();
         }
-
-        //draw() is called frequently, depending on GPU
-        let self = this;
-        requestAnimationFrame(function() {
-            self.draw();
-        })
-
     }
 
     drawWinningText() {

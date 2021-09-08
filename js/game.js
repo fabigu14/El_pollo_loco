@@ -2,6 +2,8 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let isFullscreen = false;
+let musicMuted = false;
+let soundMuted = false;
 
 function init() {
 

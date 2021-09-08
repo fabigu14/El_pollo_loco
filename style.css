@@ -20,6 +20,14 @@ canvas {
     right: 8px;
 }
 
+.sounds{
+    display: flex;
+    z-index: 99;
+    position: absolute;
+    top: 8px;
+    right: 15px;
+}
+
 .key-description {
     width: 720px;
     margin-top: 30px;
