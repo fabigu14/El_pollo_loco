@@ -4,11 +4,18 @@ let keyboard = new Keyboard();
 let isFullscreen = false;
 let musicMuted = false;
 let soundMuted = false;
+let fullScreenFactor;
+let canvasInfo;
+let factorX;
+let factorY;
+let rect;
+
 
 function init() {
 
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
+    canvasInfo = canvas.getBoundingClientRect();
 }
 
 function restartGame() {
@@ -16,25 +23,75 @@ function restartGame() {
 }
 
 function setFullscreen() {
+    
     canvas.requestFullscreen();
     isFullscreen = true;
+    
 }
 
 window.addEventListener('mousedown', function(e) {
     //React to the mouse down event
+    // console.log(e);
 
     if (isClickOnCanvas(e)) {
         keyboard.CLICK = true;
     }
+    if(isClickOnMusic(e)){
+        setMusicState();
+    }
+    if(isClickOnSound(e)){
+        setSoundState();
+    }
 });
 
+function setSoundState(){
+    if(soundMuted){
+        soundMuted = false;
+    }
+    else{
+        soundMuted = true;
+    }
+}
+
+function setMusicState(){
+    if(musicMuted){
+        musicMuted = false;
+    }
+    else{
+        musicMuted = true;
+    }
+}
+
+function isClickOnSound(e){
+    rect = canvas.getBoundingClientRect();
+    calculateFactors(rect);
+
+    return (e.x > (rect.x + (670 * factorX))) && (e.x < (rect.x + (702 * factorX))) &&
+        (e.y > (rect.y + (8 * factorY))) && (e.y < (rect.y + (40 * factorY)));
+}
+
+function isClickOnMusic(e){
+    rect = canvas.getBoundingClientRect();
+    calculateFactors(rect);
+    return (e.x > (rect.x + 630 * factorX)) && (e.x < (rect.x + 662 * factorX)) &&
+        (e.y > (rect.y + 8 * factorY)) && (e.y < (rect.y + 40 * factorY));
+}
 
 function isClickOnCanvas(e) {
-    let rect = canvas.getBoundingClientRect();
+    rect = canvas.getBoundingClientRect();
+    console.log(rect);
+    calculateFactors(rect);
 
     return (e.x > rect.x) && (e.x < (rect.x + rect.width)) &&
         (e.y > rect.y) && (e.y < (rect.y + rect.height));
 
+}
+
+function calculateFactors(rect){
+    factorX = rect.width / canvasInfo.width;
+    
+    factorY = rect.height / canvasInfo.height;
+    
 }
 
 window.addEventListener('mouseup', function(e) {

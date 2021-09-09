@@ -88,7 +88,12 @@ class World {
     run() {
         this.runInterval = setInterval(() => {
             if (this.gameHasStarted) {
-                this.playMusic();
+                if(musicMuted){
+                    this.stopMusic();
+                }
+                else{
+                    this.playMusic();
+                }
             }
 
             if (this.gameHasStarted) {
@@ -104,9 +109,7 @@ class World {
     }
 
     playMusic() {
-        if (this.gameHasStarted) {
-            this.game_music.play();
-        }
+        this.game_music.play(); 
     }
 
     stopMusic() {
@@ -116,11 +119,11 @@ class World {
     checkLevelIsCompleted() {
         if (this.level.endboss.isDead()) {
             clearInterval(this.runInterval);
-            this.stopMusic();
-            setTimeout(() => {
-                this.playWinningMusic();
-            }, 500);
+            if(!musicMuted){
 
+                this.playWinningMusic();
+                
+            }
             setTimeout(() => {
                 this.levelIsCompleted = true;
                 this.levelCompleted.levelIsCompleted = true;
@@ -132,7 +135,10 @@ class World {
 
     playWinningMusic() {
 
-        this.winning_music.play();
+        this.stopMusic();
+                setTimeout(() => {
+                    this.winning_music.play();
+                }, 500);
 
         setTimeout(() => {
             this.winning_music.pause();
@@ -140,10 +146,13 @@ class World {
     }
 
     playLosingMusic() {
-        this.losing_music.play();
-        setTimeout(() => {
-            this.losing_music.pause();
-        }, 6000);
+        if(!musicMuted){
+            this.losing_music.play();
+            setTimeout(() => {
+                this.losing_music.pause();
+            }, 6000);
+        }
+       
     }
 
     checkGameIsOver() {
@@ -255,6 +264,7 @@ class World {
     drawSoundOptions(){
         
         this.addToMap(this.sound);
+        this.addToMap(this.music);
         
     }
 

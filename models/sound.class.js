@@ -8,6 +8,17 @@ class Sound extends DrawableObject{
  
     constructor(){
         super().loadImage(this.SOUND_UNMUTED);
+        this.isSoundMuted();
+    }
 
+    isSoundMuted(){
+        setInterval(() => {
+            if(soundMuted){
+                this.loadImage(this.SOUND_MUTED);
+            }
+            else{
+                this.loadImage(this.SOUND_UNMUTED);
+            }
+        }, 1000 / 60);
     }
 }
