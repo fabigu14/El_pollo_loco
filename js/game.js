@@ -31,9 +31,10 @@ function setFullscreen() {
 
 window.addEventListener('mousedown', function(e) {
     //React to the mouse down event
-    // console.log(e);
+    console.log(e);
 
     if (isClickOnCanvas(e)) {
+    
         keyboard.CLICK = true;
     }
     if(isClickOnMusic(e)){
@@ -64,6 +65,7 @@ function setMusicState(){
 
 function isClickOnSound(e){
     rect = canvas.getBoundingClientRect();
+    checkRatio(rect);
     calculateFactors(rect);
 
     return (e.x > (rect.x + (670 * factorX))) && (e.x < (rect.x + (702 * factorX))) &&
@@ -72,6 +74,7 @@ function isClickOnSound(e){
 
 function isClickOnMusic(e){
     rect = canvas.getBoundingClientRect();
+    checkRatio(rect);
     calculateFactors(rect);
     return (e.x > (rect.x + 630 * factorX)) && (e.x < (rect.x + 662 * factorX)) &&
         (e.y > (rect.y + 8 * factorY)) && (e.y < (rect.y + 40 * factorY));
@@ -79,12 +82,35 @@ function isClickOnMusic(e){
 
 function isClickOnCanvas(e) {
     rect = canvas.getBoundingClientRect();
-    console.log(rect);
+    
     calculateFactors(rect);
 
     return (e.x > rect.x) && (e.x < (rect.x + rect.width)) &&
         (e.y > rect.y) && (e.y < (rect.y + rect.height));
 
+}
+
+function checkRatio(rect) {
+    let ratio = rect.width / rect.height;
+    let roundedRatio = Math.round(ratio * 10) / 10;
+    if(roundedRatio < 1.5){
+        adjustY(rect);
+    }
+    else if(roundedRatio > 1.5){
+        adjustX(rect);
+    }
+}
+
+function adjustY(rect) {
+    let height = rect.width / 1.5;
+    rect.y = (rect.height - height) / 2;
+    rect.height = height;
+}
+
+function adjustX(rect) {
+    let width = rect.height * 1.5;
+    rect.x = (rect.width - width) / 2;
+    rect.width = width;
 }
 
 function calculateFactors(rect){
