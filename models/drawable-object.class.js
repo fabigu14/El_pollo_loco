@@ -46,4 +46,10 @@ class DrawableObject {
             ctx.stroke();
         }
     }
+
+    playAudio(audio){
+        if(!soundMuted){
+            audio.play();
+        }
+    }
 }

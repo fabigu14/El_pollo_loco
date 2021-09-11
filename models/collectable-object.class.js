@@ -5,14 +5,22 @@ class CollectableObject extends DrawableObject {
 
     collectObject() {
         if (this instanceof Coin) {
-            this.collect_coin.play();
-            world.coinsCollected.push(this);
-            this.removeObjectFromMap(world.coins);
+            this.collectCoin();
         } else if (this instanceof Bottle) {
-            this.collect_bottle.play();
-            world.bottlesCollected.push(this);
-            this.removeObjectFromMap(world.bottles);
+          this.collectBottle();  
         }
+    }
+
+    collectCoin(){
+        this.playAudio(this.collect_coin);
+        world.coinsCollected.push(this);
+        this.removeObjectFromMap(world.coins);
+    }
+
+    collectBottle(){
+        this.playAudio(this.collect_bottle);
+        world.bottlesCollected.push(this);
+        this.removeObjectFromMap(world.bottles);
     }
 
     removeObjectFromMap(array) {

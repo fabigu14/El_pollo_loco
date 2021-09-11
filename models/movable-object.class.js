@@ -62,9 +62,9 @@ class MovableObject extends DrawableObject {
 
     playHitSound() {
         if (this instanceof Endboss) {
-            this.endboss_hurt.play();
+            this.playAudio(this.endboss_hurt);
         } else if (this instanceof Character) {
-            this.character_hurt.play();
+            this.playAudio(this.character_hurt);
         }
     }
 
@@ -92,15 +92,12 @@ class MovableObject extends DrawableObject {
         if (this.gameHasStarted) {
             this.x += this.movingSpeed;
         }
-
-
     }
 
     moveLeft() {
         if (this.gameHasStarted) {
             this.x -= this.movingSpeed;
         }
-
     }
 
     playAnimation(images) {
