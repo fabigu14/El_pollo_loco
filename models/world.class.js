@@ -24,6 +24,7 @@ class World {
     game_music = new Audio('audio/music1.mp3');
     winning_music = new Audio('audio/mariachi.mp3');
     losing_music = new Audio('audio/sad_trumpet.mp3');
+    bottle_break = new Audio('audio/breaking_bottle.mp3');
     runInterval;
 
     constructor(canvas, keyboard) {
@@ -100,6 +101,7 @@ class World {
                 this.checkEnemyCollisions();
                 this.checkCoCollisions(this.coins);
                 this.checkCoCollisions(this.bottles);
+                this.checkBottleBroke();
                 this.checkEndbossHit();
                 this.checkThrowObjects();
                 this.checkGameIsOver();
@@ -109,6 +111,7 @@ class World {
     }
 
     playMusic() {
+        this.game_music.volume = 0.5;
         this.game_music.play(); 
     }
 
@@ -134,7 +137,7 @@ class World {
     }
 
     playWinningMusic() {
-
+        this.winning_music.volume = 0.3;
         this.stopMusic();
                 setTimeout(() => {
                     this.winning_music.play();
@@ -146,6 +149,7 @@ class World {
     }
 
     playLosingMusic() {
+        this.losing_music.volume = 0.5;
         if(!musicMuted){
             this.losing_music.play();
             setTimeout(() => {
@@ -188,6 +192,7 @@ class World {
     checkEndbossHit() {
         this.throwableObjects.forEach(bottle => {
             if (this.level.endboss.isColliding(bottle)) {
+                bottle.playAudio(this.bottle_break);
                 this.level.endboss.hit(50);
                 this.throwableObjects.splice(this.throwableObjects.indexOf(bottle));
             }
@@ -198,10 +203,21 @@ class World {
     checkThrowObjects() {
         if (this.keyboard.SPACE && this.bottlesCollected.length > 0) {
             let bottle = new ThrowableObject(this.character.x + 50, this.character.y + 50);
+            // this.checkBottleBroke(bottle);
             this.bottlesCollected.splice(0, 1);
             this.throwableObjects.push(bottle);
             this.updateCoStatusBar(bottle);
         }
+    }
+
+    checkBottleBroke(){
+        this.throwableObjects.forEach(bottle => {
+            console.log(bottle.y);
+            if(bottle.isAboveGround() == false){
+                bottle.playAudio(this.bottle_break);
+                this.throwableObjects.splice(this.throwableObjects.indexOf(bottle));
+            }
+        });
     }
 
     checkCoCollisions(co) {
