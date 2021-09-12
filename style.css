@@ -3,10 +3,12 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin: 0;
 }
 
 canvas {
     background-color: black;
+    display: block;
 }
 
 .canvas-div {
@@ -50,4 +52,40 @@ canvas {
 
 .key-description span {
     margin-right: 15px;
+}
+
+@media only screen and (max-width: 720px){
+    canvas{
+        width: 100%;
+    }
+
+    #headline{
+        display: none;
+    }
+
+    #description{
+        display: none;
+    }
+
+    #fullscreen{
+        display: none;
+    }
+}
+
+@media only screen and (max-height: 480px){
+    canvas{
+        height: 100vh;
+    }
+
+    #description{
+        display: none;
+    }
+
+    #headline{
+        display: none;
+    }
+
+    #fullscreen{
+        display: none;
+    }
 }

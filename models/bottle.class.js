@@ -14,6 +14,6 @@ class Bottle extends CollectableObject {
         let position = Math.random() * 1;
         let positionRounded = Math.round(position);
         this.loadImage(this.IMAGES[positionRounded]);
-        this.x = 200 + Math.random() * 1500;
+        this.x = 200 + Math.random() * 2000;
     }
 }

@@ -22,9 +22,20 @@ class ThrowableObject extends MovableObject {
     throwObject() {
         this.speedY = 25;
         this.playAudio(this.throw_sound);
+        this.animateRotation();
         this.applyGravity();
         setInterval(() => {
             this.x += this.speedX;
+            
         }, 25);
+    }
+
+    animateRotation(){
+        setInterval(() => {
+            if(this.isAboveGround()){
+                this.playAnimation(this.IMAGES_THROW);
+            } 
+        }, 75);
+        
     }
 }

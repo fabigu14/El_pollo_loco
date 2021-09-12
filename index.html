@@ -37,19 +37,19 @@
 </head>
 
 <body onload="init()">
-    <h1>El pollo loco</h1>
+    <h1 id="headline">El pollo loco</h1>
 
     <div class="canvas-div">
         <canvas id="canvas" width="720px" height="480px"></canvas>
 
-        <div onclick="setFullscreen()" class="fullscreen">
+        <div id="fullscreen" onclick="setFullscreen()" class="fullscreen">
             <img src="img/instrucciones/fullscreen-enter-32.ico" alt="">
         </div>
        
     </div>
 
 
-    <div class="key-description">
+    <div id="description" class="key-description">
         <div class="row-pairs">
             <div class="single-key">
                 <img src="img/instrucciones/arrow-left.ico" alt="">

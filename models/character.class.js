@@ -64,7 +64,7 @@ class Character extends MovableObject {
     animateMovement(){
         setInterval(() => {
             this.running_audio.pause();
-            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+            if (this.world.keyboard.RIGHT && this.x < (this.world.level.level_end_x + 150)) {
                 this.characterMoveRight();
             }
 

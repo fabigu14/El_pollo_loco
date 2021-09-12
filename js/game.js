@@ -65,7 +65,11 @@ function setMusicState(){
 
 function isClickOnSound(e){
     rect = canvas.getBoundingClientRect();
-    checkRatio(rect);
+
+    if(!isMobileScreen()){
+        checkRatio(rect);
+    }
+    
     calculateFactors(rect);
 
     return (e.x > (rect.x + (670 * factorX))) && (e.x < (rect.x + (702 * factorX))) &&
@@ -74,7 +78,10 @@ function isClickOnSound(e){
 
 function isClickOnMusic(e){
     rect = canvas.getBoundingClientRect();
-    checkRatio(rect);
+    if(!isMobileScreen()){
+        checkRatio(rect);
+    }
+    
     calculateFactors(rect);
     return (e.x > (rect.x + 630 * factorX)) && (e.x < (rect.x + 662 * factorX)) &&
         (e.y > (rect.y + 8 * factorY)) && (e.y < (rect.y + 40 * factorY));
@@ -82,12 +89,14 @@ function isClickOnMusic(e){
 
 function isClickOnCanvas(e) {
     rect = canvas.getBoundingClientRect();
-    
-    calculateFactors(rect);
 
     return (e.x > rect.x) && (e.x < (rect.x + rect.width)) &&
         (e.y > rect.y) && (e.y < (rect.y + rect.height));
 
+}
+
+function isMobileScreen() {
+    return screen.width < 720 || screen.height < 480;
 }
 
 function checkRatio(rect) {
@@ -114,10 +123,15 @@ function adjustX(rect) {
 }
 
 function calculateFactors(rect){
-    factorX = rect.width / canvasInfo.width;
-    
-    factorY = rect.height / canvasInfo.height;
-    
+    if(isMobileScreen()){
+        factorX = rect.width / 720;
+        factorY = rect.height / 480;  
+    }
+    else{
+        factorX = rect.width / canvasInfo.width;
+        factorY = rect.height / canvasInfo.height;
+        
+    }
 }
 
 window.addEventListener('mouseup', function(e) {

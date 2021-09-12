@@ -69,7 +69,7 @@ class World {
     }
 
     createCoins() {
-        let amountOfCoins = 2 + Math.random() * 3;
+        let amountOfCoins = 2 + Math.random() * 8;
 
         for (let i = 0; i < amountOfCoins; i++) {
 
@@ -78,7 +78,7 @@ class World {
     }
 
     createBottles() {
-        let amountOfBottles = 5 + Math.random() * 12;
+        let amountOfBottles = 5 + Math.random() * 10;
 
         for (let i = 0; i < amountOfBottles; i++) {
 
@@ -193,7 +193,7 @@ class World {
         this.throwableObjects.forEach(bottle => {
             if (this.level.endboss.isColliding(bottle)) {
                 bottle.playAudio(this.bottle_break);
-                this.level.endboss.hit(50);
+                this.level.endboss.hit(25);
                 this.throwableObjects.splice(this.throwableObjects.indexOf(bottle));
             }
         });
@@ -203,7 +203,7 @@ class World {
     checkThrowObjects() {
         if (this.keyboard.SPACE && this.bottlesCollected.length > 0) {
             let bottle = new ThrowableObject(this.character.x + 50, this.character.y + 50);
-            // this.checkBottleBroke(bottle);
+    
             this.bottlesCollected.splice(0, 1);
             this.throwableObjects.push(bottle);
             this.updateCoStatusBar(bottle);
@@ -369,7 +369,7 @@ class World {
         }
 
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
+        // mo.drawFrame(this.ctx);
 
 
         if (mo.oppositeDirection) {
