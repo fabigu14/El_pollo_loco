@@ -88,31 +88,40 @@ class World {
 
     run() {
         this.runInterval = setInterval(() => {
-            if (this.gameHasStarted) {
-                if(musicMuted){
-                    this.stopMusic();
-                }
-                else{
-                    this.playMusic();
-                }
-            }
+            this.checkPlayMusic();
 
-            if (this.gameHasStarted) {
-                this.checkEnemyCollisions();
-                this.checkCoCollisions(this.coins);
-                this.checkCoCollisions(this.bottles);
-                this.checkBottleBroke();
-                this.checkEndbossHit();
-                this.checkThrowObjects();
-                this.checkGameIsOver();
-                this.checkLevelIsCompleted();
-            }
+            this.startCheckIntervals();
+
         }, 200);
+    }
+
+    startCheckIntervals() {
+        if (this.gameHasStarted) {
+            this.checkEnemyCollisions();
+            this.checkCoCollisions(this.coins);
+            this.checkCoCollisions(this.bottles);
+            this.checkBottleBroke();
+            this.checkEndbossHit();
+            this.checkThrowObjects();
+            this.checkGameIsOver();
+            this.checkLevelIsCompleted();
+        }
+    }
+
+
+    checkPlayMusic() {
+        if (this.gameHasStarted) {
+            if (musicMuted) {
+                this.stopMusic();
+            } else {
+                this.playMusic();
+            }
+        }
     }
 
     playMusic() {
         this.game_music.volume = 0.5;
-        this.game_music.play(); 
+        this.game_music.play();
     }
 
     stopMusic() {
@@ -122,10 +131,10 @@ class World {
     checkLevelIsCompleted() {
         if (this.level.endboss.isDead()) {
             clearInterval(this.runInterval);
-            if(!musicMuted){
+            if (!musicMuted) {
 
                 this.playWinningMusic();
-                
+
             }
             setTimeout(() => {
                 this.levelIsCompleted = true;
@@ -139,9 +148,9 @@ class World {
     playWinningMusic() {
         this.winning_music.volume = 0.3;
         this.stopMusic();
-                setTimeout(() => {
-                    this.winning_music.play();
-                }, 500);
+        setTimeout(() => {
+            this.winning_music.play();
+        }, 500);
 
         setTimeout(() => {
             this.winning_music.pause();
@@ -150,13 +159,13 @@ class World {
 
     playLosingMusic() {
         this.losing_music.volume = 0.5;
-        if(!musicMuted){
+        if (!musicMuted) {
             this.losing_music.play();
             setTimeout(() => {
                 this.losing_music.pause();
             }, 6000);
         }
-       
+
     }
 
     checkGameIsOver() {
@@ -203,17 +212,17 @@ class World {
     checkThrowObjects() {
         if (this.keyboard.SPACE && this.bottlesCollected.length > 0) {
             let bottle = new ThrowableObject(this.character.x + 50, this.character.y + 50);
-    
+
             this.bottlesCollected.splice(0, 1);
             this.throwableObjects.push(bottle);
             this.updateCoStatusBar(bottle);
         }
     }
 
-    checkBottleBroke(){
+    checkBottleBroke() {
         this.throwableObjects.forEach(bottle => {
             console.log(bottle.y);
-            if(bottle.isAboveGround() == false){
+            if (bottle.isAboveGround() == false) {
                 bottle.playAudio(this.bottle_break);
                 this.throwableObjects.splice(this.throwableObjects.indexOf(bottle));
             }
@@ -262,7 +271,7 @@ class World {
         //space for position fixed elements
         this.ctx.translate(-this.camera_x, 0);
         this.addStatusBars();
-        
+
         this.ctx.translate(this.camera_x, 0);
 
         this.addGameObjects();
@@ -272,21 +281,21 @@ class World {
         this.drawOverlay();
 
         this.drawSoundOptions();
-        
+
         this.recallDraw();
-        
+
     }
 
-    drawSoundOptions(){
-        
+    drawSoundOptions() {
+
         this.addToMap(this.sound);
         this.addToMap(this.music);
-        
+
     }
 
 
     //draw() is called frequently, depending on GPU
-    recallDraw(){
+    recallDraw() {
         let self = this;
         requestAnimationFrame(function() {
             self.draw();
@@ -294,7 +303,7 @@ class World {
 
     }
 
-    drawOverlay(){
+    drawOverlay() {
         if (!this.gameHasStarted) {
             this.drawStartSreen();
         }

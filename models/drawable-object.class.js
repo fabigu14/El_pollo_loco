@@ -7,6 +7,10 @@ class DrawableObject {
     y = 200;
     height = 70;
     width = 70;
+    offsetX = 0;
+    offsetY = 0;
+    offsetWidth = 0;
+    offsetHeight = 0;
 
     loadImage(path) {
         this.img = new Image();
@@ -47,8 +51,8 @@ class DrawableObject {
         }
     }
 
-    playAudio(audio){
-        if(!soundMuted){
+    playAudio(audio) {
+        if (!soundMuted) {
             audio.play();
         }
     }

@@ -27,7 +27,7 @@ class MovableObject extends DrawableObject {
             return true;
         } else if (this instanceof Endboss) {
             return false;
-        } else if(this instanceof ThrowableObject){
+        } else if (this instanceof ThrowableObject) {
             return this.y < 350;
         } else {
             return this.y < 180;
@@ -35,21 +35,12 @@ class MovableObject extends DrawableObject {
     }
 
     isColliding(mo) {
-        if (this instanceof Character && mo instanceof CollectableObject) {
-
-            return !(
-                ((this.y + 90) + (this.height - 100) < (mo.y + 15)) ||
-                ((this.y + 90) > (mo.y + 15) + (mo.height - 30)) ||
-                ((this.x + 10) + (this.width - 20) < (mo.x + 15)) ||
-                ((this.x + 10) > (mo.x + 15) + (mo.width - 30))
-            );
-
-        } else {
-            return this.x + this.width > mo.x &&
-                this.y + this.height > mo.y &&
-                this.x < mo.x + mo.width &&
-                this.y < mo.y + mo.height;
-        }
+        return !(
+            ((this.y + this.offsetY) + (this.height - this.offsetHeight) < (mo.y + mo.offsetY)) ||
+            ((this.y + this.offsetY) > (mo.y + mo.offsetY) + (mo.height - mo.offsetHeight)) ||
+            ((this.x + this.offsetX) + (this.width - this.offsetWidth) < (mo.x + mo.offsetX)) ||
+            ((this.x + this.offsetX) > (mo.x + mo.offsetX) + (mo.width - mo.offsetWidth))
+        );
     }
 
     hit(damage) {
