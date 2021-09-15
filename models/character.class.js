@@ -7,6 +7,8 @@ class Character extends MovableObject {
     offsetY = 90;
     offsetWidth = 20;
     offsetHeight = 100;
+    deathSpeedY = 15;
+    deathAccaloration = 1;
     IMAGES_WALKING = [
         'img/2.Secuencias_Personaje-Pepe-corrección/2.Secuencia_caminata/W-21.png',
         'img/2.Secuencias_Personaje-Pepe-corrección/2.Secuencia_caminata/W-22.png',
@@ -44,12 +46,11 @@ class Character extends MovableObject {
         'img/2.Secuencias_Personaje-Pepe-corrección/4.Herido/H-43.png'
     ];
 
-    // world;
     running_audio = new Audio('audio/running_2.mp3');
     jumping_audio = new Audio('audio/jump.mp3');
 
     constructor() {
-        super().loadImage('img/2.Secuencias_Personaje-Pepe-corrección/2.Secuencia_caminata/W-21.png')
+        super().loadImage('img/2.Secuencias_Personaje-Pepe-corrección/2.Secuencia_caminata/W-21.png');
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_JUMPING);
         this.loadImages(this.IMAGES_DYING);
@@ -58,57 +59,77 @@ class Character extends MovableObject {
         this.animate();
     }
 
+    /**
+     * This function invokes two functions, which are needed to animate the character
+     */
     animate() {
 
         this.animateMovement();
         this.animateImages();
-
     }
 
+    /**
+     * This function checks which movement the character is performing
+     */
     animateMovement() {
         setInterval(() => {
             this.running_audio.pause();
             if (this.world.keyboard.RIGHT && this.x < (this.world.level.level_end_x + 150)) {
                 this.characterMoveRight();
             }
-
             if (this.world.keyboard.LEFT && this.x > -618) {
                 this.characterMoveLeft();
             }
-
             if (this.world.keyboard.UP && !this.isAboveGround()) {
                 this.chracterJump();
+            }
+            if (this.isLastHit()) {
+                this.death(this.deathSpeedY, this.deathAccaloration);
             }
             this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
     }
 
+    /**
+     * This function invokes the moveRight() function of the Movable-Object class &
+     * plays an running sound
+     */
     characterMoveRight() {
         this.moveRight();
         this.oppositeDirection = false;
         this.playAudio(this.running_audio);
     }
 
+    /**
+     * This function invokes the moveLeft() function of the Movable-Object class &
+     * plays an running sound
+     */
     characterMoveLeft() {
         this.moveLeft();
         this.oppositeDirection = true;
         this.playAudio(this.running_audio);
     }
 
+    /**
+     * This function invokes the jump() function of the Movable-Object class &
+     * plays an jumping sound
+     */
     chracterJump() {
         this.jump();
         this.playAudio(this.jumping_audio);
     }
 
+    /**
+     * This function checks current state of the character &
+     * sets the Images for this state
+     */
     animateImages() {
         setInterval(() => {
-
             if (this.isDead()) {
                 this.playAnimation(this.IMAGES_DYING);
             }
             if (this.isLastHit()) {
                 this.playAnimation(this.IMAGES_DYING);
-                this.death(15, 1);
             } else if (this.isHurt() && !this.isDead()) {
                 this.playAnimation(this.IMAGES_HURT);
             } else if (this.isAboveGround() && !this.isDead()) {

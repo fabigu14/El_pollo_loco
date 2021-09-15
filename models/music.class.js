@@ -1,22 +1,24 @@
-class Music extends DrawableObject{
+class Music extends DrawableObject {
     MUSIC_MUTED = 'img/instrucciones/mute-music.png';
     MUSIC_UNMUTED = 'img/instrucciones/music.png';
     y = 8;
     width = 32;
     height = 32;
- 
-    constructor(){
+
+    constructor() {
         super().loadImage(this.MUSIC_UNMUTED);
         this.isMusicMuted();
     }
 
-    isMusicMuted(){
+    /**
+     * This function checks if music is muted or not & sets the correct img
+     */
+    isMusicMuted() {
         setInterval(() => {
-            if(musicMuted){
+            if (musicMuted) {
                 this.x = 625;
                 this.loadImage(this.MUSIC_MUTED);
-            }
-            else{
+            } else {
                 this.x = 630;
                 this.loadImage(this.MUSIC_UNMUTED);
             }
