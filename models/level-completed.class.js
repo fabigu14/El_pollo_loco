@@ -10,13 +10,14 @@ class LevelCompleted extends DrawableObject {
         this.animateText();
     }
 
+    /**
+     * This function animates the text in level completed screen
+     */
     animateText() {
-
         setInterval(() => {
             if (this.levelIsCompleted && this.y <= canvas.height / 2) {
                 this.y += 2;
             }
         }, 1000 / 60);
-
     }
 }

@@ -10,13 +10,14 @@ class GameOver extends DrawableObject {
         this.animateText();
     }
 
+    /**
+     * This function animates the text in Game Over screen
+     */
     animateText() {
-
         setInterval(() => {
             if (this.gameIsOver && this.y <= canvas.height / 2) {
                 this.y += 2;
             }
         }, 1000 / 60);
-
     }
 }

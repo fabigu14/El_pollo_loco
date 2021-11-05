@@ -19,6 +19,9 @@ class ThrowableObject extends MovableObject {
         this.throwObject()
     }
 
+    /**
+     * This function is used to throw a bottle
+     */
     throwObject() {
         this.speedY = 25;
         this.playAudio(this.throw_sound);
@@ -26,16 +29,19 @@ class ThrowableObject extends MovableObject {
         this.applyGravity();
         setInterval(() => {
             this.x += this.speedX;
-            
+
         }, 25);
     }
 
-    animateRotation(){
+    /**
+     * This function changes the imgs of the bottle during the throw(rotation)
+     */
+    animateRotation() {
         setInterval(() => {
-            if(this.isAboveGround()){
+            if (this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_THROW);
-            } 
+            }
         }, 75);
-        
+
     }
 }

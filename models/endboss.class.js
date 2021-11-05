@@ -43,6 +43,9 @@ class Endboss extends MovableObject {
     height = 400;
     width = 250;
     y = 55;
+    walkingSpeed = 7;
+    deathSpeedY = 15;
+    deathAccaloration = 1;
 
     constructor(level_end_x) {
         super().loadImage('img/4.Secuencias_Enemy_gigantón-Doña_Gallinota-/2.Ateción-ataque/1.Alerta/G5.png')
@@ -57,20 +60,17 @@ class Endboss extends MovableObject {
     }
 
     animate() {
+        this.moveEndboss();
+        this.animateEndboss();
+    }
 
+    /**
+     * This function invokes two functions, which are needed to animate the enboss
+     */
+    animateEndboss() {
         setInterval(() => {
-            if (this.endbossWalking() && !this.isDead()) {
-                this.x -= 7;
-            }
-        }, 1000 / 60);
-
-        setInterval(() => {
-
             if (this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD);
-            }
-            if (this.isLastHit()) {
-                this.death(15, 1);
             } else if (this.isHurt() && !this.isDead()) {
                 this.playAnimation(this.IMAGES_HURT);
             } else if (this.endbossWalking() && !this.isDead()) {
@@ -81,6 +81,25 @@ class Endboss extends MovableObject {
         }, 150);
     }
 
+    /**
+     * This function checks which movement the enboss is performing
+     */
+    moveEndboss() {
+        setInterval(() => {
+            if (this.endbossWalking() && !this.isDead()) {
+                this.x -= this.walkingSpeed;
+            }
+            if (this.isLastHit()) {
+                this.death(this.deathSpeedY, this.deathAccaloration);
+            }
+        }, 1000 / 60);
+    }
+
+    /**
+     * This calculates the time that passed since the last hit
+     * 
+     * @returns {number} - time passed in seconds
+     */
     endbossWalking() {
         let timePassed = new Date().getTime() - this.lastHit;
         timePassed = timePassed / 1000;
