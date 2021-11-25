@@ -63,6 +63,9 @@ function mobileStart() {
     document.getElementById("canvas").ontouchend = function() {
         keyboard.CLICK = false;
     }
+    document.getElementById("canvas").oncontextmenu = function() {
+        return false;
+    }
 }
 
 function mobileJump() {
