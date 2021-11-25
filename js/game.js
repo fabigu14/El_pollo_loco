@@ -14,7 +14,6 @@ let rect;
  * This function initializes the game
  */
 function init() {
-
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
     canvasInfo = canvas.getBoundingClientRect();
@@ -37,12 +36,78 @@ function setFullscreen() {
 
 }
 
+
+function waitForLoad(id, callback) {
+    var timer = setInterval(function() {
+        if (document.getElementById(id)) {
+            clearInterval(timer);
+            callback();
+        }
+    }, 100);
+}
+
+waitForLoad("canvas", function() {
+
+    mobileStart();
+    mobileJump();
+    mobileThrow();
+    mobileLeft();
+    mobileRight();
+
+});
+
+function mobileStart() {
+    document.getElementById("canvas").ontouchstart = function() {
+        keyboard.CLICK = true;
+    }
+    document.getElementById("canvas").ontouchend = function() {
+        keyboard.CLICK = false;
+    }
+}
+
+function mobileJump() {
+    document.getElementById("jump").ontouchstart = function() {
+        keyboard.UP = true;
+    }
+    document.getElementById("jump").ontouchend = function() {
+        keyboard.UP = false;
+    }
+}
+
+function mobileThrow() {
+    document.getElementById("throw").ontouchstart = function() {
+        keyboard.SPACE = true;
+    }
+    document.getElementById("throw").ontouchend = function() {
+        keyboard.SPACE = false;
+    }
+}
+
+function mobileLeft() {
+    document.getElementById("left").ontouchstart = function() {
+        keyboard.LEFT = true;
+    }
+    document.getElementById("left").ontouchend = function() {
+        keyboard.LEFT = false;
+    }
+}
+
+function mobileRight() {
+    document.getElementById("right").ontouchstart = function() {
+        keyboard.RIGHT = true;
+    }
+    document.getElementById("right").ontouchend = function() {
+        keyboard.RIGHT = false;
+    }
+}
+
+
 /**
  * This function adds an eventListener if the mouse was clicked
  */
 window.addEventListener('mousedown', function(e) {
     //React to the mouse down event
-    console.log(e);
+    // console.log(e);
 
     if (isClickOnCanvas(e)) {
 
